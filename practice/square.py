@@ -1,0 +1,5 @@
+print("|_______________|")
+print("|  How          |")
+print("|     Are       |")
+print("|        You?   |")
+print("|_______________|")
