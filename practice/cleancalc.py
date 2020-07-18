@@ -42,6 +42,7 @@ def main():
     print("The application has closed.")
 
 
+# Obtain the first number input
 def enterNumber1(numbers):
     haveNumber = True
     while haveNumber:
