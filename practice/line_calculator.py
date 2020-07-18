@@ -1,10 +1,15 @@
+print('Welcome to Harold\'s More Advanced Calculator, a.k.a "H-MAC". Type "Exit"')
+print('at any time to close the app or "Help" for a list of possible operations.')
+
+
 def main():
     numbers = []
     operator = []
     answer = []
     keepGoing = True
-    print('Welcome to Harold\'s More Advanced Calculator, a.k.a "H-MAC". Type "Exit"')
-    print('at any time to close the app or "Help" for a list of possible operations.')
+
+    # help and exit and clear functions are not yet operational. I am just working on getting a better calculator working first.
+
     while keepGoing:
         keepGoing = number_Entry(numbers)
     if len(numbers) > 0:
@@ -25,6 +30,9 @@ def main():
         numbers.clear()
         numbers.append(a)
         keepGoing = main()
+
+
+# calculator portion works, now I need to get it to be able to loop back through with memory of the previous answer.
 
 
 def number_Entry(numbers):
