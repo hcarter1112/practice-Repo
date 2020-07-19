@@ -1,0 +1,23 @@
+What are my objectives in this project??
+    1. Create a game 
+        a. I want there to be profiles. 
+            i. there needs to be login
+            ii. you need to be able to register a new account
+            iii. i want you to be able to save game files to your profiles.
+        b. I am hoping that there will be the following entities in the game. 
+            i. items
+            ii.character stats
+            iii. enemies
+            iv. game menus
+        c. Abilities
+            i. a battle system
+            ii. leveling system
+            iii. choices to make (left or right)
+            iv. maybe a karma system
+
+
+How can i break this down into projects?
+    1. create a log in system
+    2. create a way to save your game
+    3. think of a character creation system
+    4. 
