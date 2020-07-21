@@ -19,23 +19,35 @@ import sys
 
 
 def recursive(fac_num: int) -> list:
-    results = []
-    numbers = []
     if fac_num < 0:
         raise Exception("Must be < or = 0")
     if fac_num <= 1:
-        return [1]
-    a = recursive(fac_num - 1) * fac_num
-    x = a[0] * fac_num
-    results.append(a[0])
-    numbers.append(x)
-    return numbers
+        return [1, [1]]
+    a, x = recursive(fac_num - 1)
+    print(a, x)
+    a *= fac_num
+    return [a, [a] + x]
+
+
+print(recursive(5))
+
+
+# def factorial(facnum: int) -> tuple:
+#     if facnum < 0:
+#         raise Exception("nah man!")
+#     if facnum <= 1:
+#         return [1, [1]]
+#     result, f_values = factorial(facnum - 1)
+#     result *= facnum
+#     return [result, [result] + f_values]
+
+
+# print(factorial(5))
 
 
 # recursive(3) = [recursive(2) * 3]
 
 
-print(recursive(3))
 # print()
 
 # 6
