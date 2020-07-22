@@ -103,9 +103,9 @@ def Game(
             random_boolean = "before"
         else:
             random_boolean = "after"
-        random_book = random.randrange(2, 66, 1)
+        random_book = random.randrange(2, 65, 1)
         while random_book in q_exceptions:
-            random_book = random.randrange(2, 66, 1)
+            random_book = random.randrange(2, 65, 1)
         if random_book not in q_exceptions:
             q_exceptions.append(random_book)
         print(
