@@ -103,11 +103,15 @@ def Game(
             random_boolean = "before"
         else:
             random_boolean = "after"
-        random_book = random.randrange(2, 65, 1)
+        random_book = random.randrange(0, 65, 1)
         while random_book in q_exceptions:
-            random_book = random.randrange(2, 65, 1)
+            random_book = random.randrange(0, 65, 1)
         if random_book not in q_exceptions:
             q_exceptions.append(random_book)
+        if random_book == 0:
+            random_boolean = "after"
+        if random_book == 65:
+            random_boolean = "before"
         print(
             "What book of the Bible comes "
             + random_boolean
