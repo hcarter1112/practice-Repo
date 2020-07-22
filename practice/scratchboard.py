@@ -1,4 +1,3 @@
-print("\nWould you like to play again?")
-print("\n1. Yes", "\n2. No\n")
+liti = [1, 3, 5, 6, 7]
 
-play_again = int(input())
+print(len(liti))

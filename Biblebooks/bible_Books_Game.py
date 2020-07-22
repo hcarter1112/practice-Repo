@@ -72,48 +72,48 @@ def main():
     ]
 
     print("Welcome to Harold's Bible Order Tester, 'H-BOT'!")
-    print("In this game your knowledge of the order of Bible books will be tested.")
-    print(
-        "You can input how many questions you would like to go through before you get your scorecard."
-    )
-    print("From there you will be able to select to play the game again.")
 
     keepGoing = True
-    repeat = True
     number_correct = 0
-    while repeat:
-        while keepGoing:
-            print("\nHow many questions would you like? ")
-            num_questions = int(input())
-            keepGoing = Game(num_questions, bible_Books, number_correct)
+    # This loop determines how many questions will be on the test
+    while keepGoing:
+        print("\nHow many questions would you like? ")
+        num_questions = int(input())
+        keepGoing = Game(num_questions, bible_Books, number_correct)
+    print("Thanks for playing H-BOT!")
 
 
-def Game(
-    num_questions, bible_Books, number_correct
-):  # this is where the questions will be generated
+def Game(num_questions, bible_Books, number_correct):
 
     number_left = num_questions
     q_exceptions = []
+    # this loop will create the base questions "What book of the Bible comes...?"
     for questions in list(range(num_questions)):
         random_bit = random.getrandbits(1)
         random_boolean = bool(random_bit)
         book_exceptions = []
         ans_exceptions = []
+        # if statements meant to translate the random_bit value for use in the question.
         if random_boolean == True:
             random_boolean = "before"
         else:
             random_boolean = "after"
+        # a random_book of the bible is selected for the question
         random_book = random.randrange(0, 65, 1)
-        if q_exceptions.count() == 66:
+        # meant to add the books used in each questions to an exceptions list so that you
+        # done get the same question twice until you have cycled through all 66 books of the bible
+        if len(q_exceptions) == 65:
             q_exceptions = []
         while random_book in q_exceptions:
             random_book = random.randrange(0, 65, 1)
         if random_book not in q_exceptions:
             q_exceptions.append(random_book)
+        # So you dont get a "what is before Genesis" or "...after Revelation" question
         if random_book == 0:
             random_boolean = "after"
         if random_book == 65:
             random_boolean = "before"
+        # printed question
         print(
             "What book of the Bible comes "
             + random_boolean
@@ -124,22 +124,25 @@ def Game(
 
         mult_letters = [1, 2, 3, 4]
         mult_letters_index = 0
+        # for loop is to create 3 incorrect answers and 1 correct answer
         for items in mult_letters:
             before_random_book = random_book - 1
             after_random_book = random_book + 1
             answer_randomizer = random.randrange(101, 105, 1)
             random_ans = random.randrange(2, 66, 1)
+            # loop is for ensuring that the answer_randomizer value does not reapeat. This ensures that you will always get 1 correct answer
             while answer_randomizer in book_exceptions:
                 answer_randomizer = random.randrange(101, 105, 1)
             if answer_randomizer not in book_exceptions:
                 book_exceptions.append(answer_randomizer)
-
+            # ensures that the incorrect answers are not repeated in the same question
             while random_ans in ans_exceptions:
                 random_ans = random.randrange(1, 66, 1)
             if random_ans not in ans_exceptions:
                 ans_exceptions.append(random_ans)
+            # adds the random_book in the list so that you will not get it as an answer
             ans_exceptions.append(random_book)
-
+            # The following if statements give conditions for a correct answer and a means of producing incorrect answers
             if answer_randomizer == 101 and random_boolean == "after":
                 correct_answer = mult_letters_index + 1
                 ans_exceptions.append(after_random_book)
@@ -165,37 +168,41 @@ def Game(
                     + bible_Books[random_ans]
                 )
                 mult_letters_index += 1
-
+        # Answer input
         ans = int(input("\nYour answer? "))
+        # Correct/Incorrect answer response and counter for correct answer
         if ans == correct_answer:
             print("\nCorrect!")
             number_correct += 1
-
         else:
             print("\nIncorrect :,(")
-
+        # The following statements are for the questions left counter.
+        # The messages changes depending on number_left variable's proximity to 0.
+        # This is for when 1 question remains
         if number_left == 2:
             number_left -= 1
             print("Only " + str(number_left) + " question left...")
             print("-" * 80)
-
+        # This is for when 3-2 questions remain
         elif number_left == 4 or number_left == 3:
             number_left -= 1
             print(
                 "THE FINAL COUNTDOOOWWWN!! " + str(number_left) + " questions left..."
             )
             print("-" * 80)
-
+        # Final question
         elif number_left == 0:
             break
-
+        # Greater than 3 questions remain
         else:
             number_left -= 1
             print("You have " + str(number_left) + " left...")
             print("-" * 80)
+    # Scorecard section. I will calculate a percentage and give a grade.
+    # (Functionality for an answer sheet is also in the works)
     percent = number_correct / num_questions
     percent *= 100
-
+    # Grades depending on your percentage
     if percent == 100:
         print(
             "Congratulations bible scholar! You got an 'A+' at "
@@ -216,12 +223,12 @@ def Game(
             + str(int(percent))
             + "%. JW.ORG has a free copy of the bible for you to study from!"
         )
-
+    # Input for for replaying the game
     print("\nWould you like to play again?")
     print("\n1. Yes", "\n2. No\n")
 
     play_again = int(input())
-
+    # Statements for play_again input
     if play_again == 1:
         return True
     if play_again == 2:
