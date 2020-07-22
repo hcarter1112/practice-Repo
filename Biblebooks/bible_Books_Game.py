@@ -187,27 +187,27 @@ def Game(
             number_left -= 1
             print("You have " + str(number_left) + " left...")
             print("-" * 80)
-    grade = number_correct / num_questions
-    grade *= 100
+    percent = number_correct / num_questions
+    percent *= 100
 
-    if grade == 100:
+    if percent == 100:
         print(
             "Congratulations bible scholar! You got an 'A+' at "
-            + str(int(grade))
+            + str(int(percent))
             + "%. WOOT!"
         )
-    elif grade >= 90 and grade < 100:
-        print("You got an 'A' at " + str(int(grade)) + "%. Awesome work!")
-    elif grade >= 80 and grade < 90:
-        print("You got an 'B' at " + str(int(grade)) + "%. Good job!")
-    elif grade >= 70 and grade < 80:
-        print("You got an 'C' at " + str(int(grade)) + "%. Well... You passed =)!")
-    elif grade >= 60 and grade < 70:
-        print("You got an 'D' at " + str(int(grade)) + "%. Ouch!")
+    elif percent >= 90 and percent < 100:
+        print("You got an 'A' at " + str(int(percent)) + "%. Awesome work!")
+    elif percent >= 80 and percent < 90:
+        print("You got an 'B' at " + str(int(percent)) + "%. Good job!")
+    elif percent >= 70 and percent < 80:
+        print("You got an 'C' at " + str(int(percent)) + "%. Well... You passed =)!")
+    elif percent >= 60 and percent < 70:
+        print("You got an 'D' at " + str(int(percent)) + "%. Ouch!")
     else:
         print(
             "You got an 'F' at "
-            + str(int(grade))
+            + str(int(percent))
             + "%. JW.ORG has a free copy of the bible for you to study from!"
         )
 
