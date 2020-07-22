@@ -104,6 +104,8 @@ def Game(
         else:
             random_boolean = "after"
         random_book = random.randrange(0, 65, 1)
+        if q_exceptions.count() == 66:
+            q_exceptions = []
         while random_book in q_exceptions:
             random_book = random.randrange(0, 65, 1)
         if random_book not in q_exceptions:
