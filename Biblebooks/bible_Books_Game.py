@@ -83,6 +83,8 @@ while repeat:
         keepGoing = Game(num_questions, bible_Books)
 
 def Game(num_questions, bible_Books):#this is where the questions will be generated
+    mult_letters = ['a.', 'b,', 'c.', 'd.']
+    mult_letters_index = 0
     q_Num = 1
     for questions in list(range(num_questions)):
         random_bit = random.getrandbits(1)
@@ -93,6 +95,10 @@ def Game(num_questions, bible_Books):#this is where the questions will be genera
             random_boolean = 'after'
         random_book = random.randrange(1, 66, 1)
         print(str(q_Num) + ". What book of the Bible comes " + random_boolean + " " + bible_Books[random_book] + "?")
+        for items in len(mult_letters):
+            random_ans = random.randrange(1, 66, 1)
+            print(mult_letters[mult_letters_index] + bible_Books[random_ans])
+
         q_Num += 1
 
 def scorecard():#this will dispay after the game has completed and will give them a grade for their performance. This should also include the option to play again
