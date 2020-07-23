@@ -1,3 +1,4 @@
-liti = [1, 3, 5, 6, 7]
+import json
 
-print(len(liti))
+settings = json.loads('{"English":[3,4,5]}')
+print(len(settings["English"]))

@@ -1,4 +1,5 @@
 import random
+import json
 
 
 def main():
@@ -78,35 +79,51 @@ def main():
     # This loop determines how many questions will be on the test
     while keepGoing:
         print("\nHow many questions would you like? ")
-        num_questions = int(input())
+        num_questions = input().strip()
+        while not num_questions.isnumeric():
+            print("ERROR: Please enter a number")
+            print("\nHow many questions would you like? ")
+            num_questions = input().strip()
+            print("-" * 80)
+        print("-" * 80)
         keepGoing = Game(num_questions, bible_Books, number_correct)
     print("Thanks for playing H-BOT!")
 
 
 def Game(num_questions, bible_Books, number_correct):
 
-    number_left = num_questions
+    number_left = int(num_questions)
     q_exceptions = []
+    # ========================================================
+    # values for incorrect answer scorecard. They are stored here
+    # so that they do not reset with each loop iteration.
+    # ========================================================
     incorrect_response_book = []
     incorrect_response_boolean = []
     incorrect_response_wrong_ans = []
     incorrect_response_right_ans = []
-    # this loop will create the base questions "What book of the Bible comes...?"
-    for questions in list(range(num_questions)):
+    # ========================================================
+    # Where the question "What bible book comes.." is made
+    # ========================================================
+    for questions in list(range(int(num_questions))):
         random_bit = random.getrandbits(1)
         random_boolean = bool(random_bit)
-        book_exceptions = []
-        ans_exceptions = []
-        wrong_answers = []
-        # if statements meant to translate the random_bit value for use in the question.
+        answer_randomizer_no_repeat = []
+        mult_choice_ans = []
+        # --------------------------------------------------------
+        # if statements meant to translate
+        # the random_bit value to before or after for use in the question.
+        # --------------------------------------------------------
         if random_boolean == True:
             random_boolean = "before"
         else:
             random_boolean = "after"
         # a random_book of the bible is selected for the question
         random_book = random.randrange(0, 65, 1)
+        # --------------------------------------------------------
         # meant to add the books used in each questions to an exceptions list so that you
-        # done get the same question twice until you have cycled through all 66 books of the bible
+        # don't get the same question twice until you have cycled through all 66 books of the bible
+        # --------------------------------------------------------
         if len(q_exceptions) == 65:
             q_exceptions = []
         while random_book in q_exceptions:
@@ -120,48 +137,58 @@ def Game(num_questions, bible_Books, number_correct):
             random_boolean = "before"
         # printed question
         print(
-            "What book of the Bible comes "
+            "\nWhat book of the Bible comes "
             + random_boolean
             + " "
             + bible_Books[random_book]
             + "?"
         )
-
+        # ========================================================
+        # Where the multiple choice is generated.
+        # ========================================================
         mult_letters = [1, 2, 3, 4]
         mult_letters_index = 0
-        # for loop is to create 3 incorrect answers and 1 correct answer
+        # --------------------------------------------------------
+        # begins with assigning RNG to certain values.
+        # Also a no-repeat loop so that none of the answers repeat within
+        # the same set of mult choice answers
+        # --------------------------------------------------------
         for items in mult_letters:
             before_random_book = random_book - 1
             after_random_book = random_book + 1
-            answer_randomizer = random.randrange(101, 105, 1)
+            answer_randomizer = random.randrange(1, 5, 1)
             random_ans = random.randrange(2, 66, 1)
             # loop is for ensuring that the answer_randomizer value does not reapeat. This ensures that you will always get 1 correct answer
-            while answer_randomizer in book_exceptions:
-                answer_randomizer = random.randrange(101, 105, 1)
-            if answer_randomizer not in book_exceptions:
-                book_exceptions.append(answer_randomizer)
+            while answer_randomizer in answer_randomizer_no_repeat:
+                answer_randomizer = random.randrange(1, 5, 1)
+            if answer_randomizer not in answer_randomizer_no_repeat:
+                answer_randomizer_no_repeat.append(answer_randomizer)
             # ensures that the incorrect answers are not repeated in the same question
-            while random_ans in ans_exceptions:
+            while random_ans in mult_choice_ans:
                 random_ans = random.randrange(1, 66, 1)
-            if random_ans not in ans_exceptions:
-                ans_exceptions.append(random_ans)
+            if random_ans not in mult_choice_ans:
+                mult_choice_ans.append(random_ans)
             # adds the random_book in the list so that you will not get it as an answer
-            ans_exceptions.append(random_book)
-            # The following if statements give conditions for a correct answer and a means of producing incorrect answers
-            if answer_randomizer == 101 and random_boolean == "after":
+            mult_choice_ans.append(random_book)
+            # --------------------------------------------------------
+            # The following if statements give conditions
+            # for a correct answer and a means of producing incorrect answers.
+            # Then the values are stored for reference for no-repeat and
+            # for if an incorrect answer is selected
+            # --------------------------------------------------------
+
+            if answer_randomizer == 1 and random_boolean == "after":
                 correct_answer = mult_letters_index + 1
-                ans_exceptions.append(after_random_book)
-                wrong_answers.append(after_random_book)
+                mult_choice_ans.append(after_random_book)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
                     + str(bible_Books[after_random_book])
                 )
                 mult_letters_index += 1
-            elif answer_randomizer == 102 and random_boolean == "before":
+            elif answer_randomizer == 2 and random_boolean == "before":
                 correct_answer = mult_letters_index + 1
-                ans_exceptions.append(before_random_book)
-                wrong_answers.append(before_random_book)
+                mult_choice_ans.append(before_random_book)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
@@ -169,7 +196,7 @@ def Game(num_questions, bible_Books, number_correct):
                 )
                 mult_letters_index += 1
             else:
-                wrong_answers.append(random_ans)
+                mult_choice_ans.append(random_ans)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
@@ -177,18 +204,27 @@ def Game(num_questions, bible_Books, number_correct):
                 )
                 mult_letters_index += 1
         # Answer input
-        ans = int(input("\nYour answer? "))
-        # Correct/Incorrect answer response and counter for correct answer
+        ans = input("\nYour answer? ").strip()
+        while not ans.isnumeric() or int(ans) > 4 or int(ans) < 1:
+            print("ERROR: Please select '1', '2', '3', or '4' as a valid response")
+            ans = input("\nYour answer? ").strip()
+
+        # ========================================================
+        # # Correct/Incorrect answer response and counter for correct answer
+        # ========================================================
         if ans == correct_answer:
             print("\nCorrect!")
             number_correct += 1
-        # incorrect tracker...
+        # --------------------------------------------------------
+        # if the answer is incorrect the data for that question is stored in lists.
+        # in INT for for reference on the scorecard.
+        # --------------------------------------------------------
         else:
             print("\nIncorrect :,(")
             # how we find and store the bible book that was selected incorrectly
-            wrong = ans - 1
-            wrong_ans = wrong_answers[wrong]
-            # here is where we append the key value pairs to the dictionary to be accessed at the end.
+            wrong = int(ans) - 1
+            wrong_ans = mult_choice_ans[wrong]
+            # here is where we append the data to lists noted above the initial for loop to be accessed at the end.
             if random_boolean == "after":
                 incorrect_response_book.append(random_book)
                 incorrect_response_boolean.append(random_boolean)
@@ -200,9 +236,11 @@ def Game(num_questions, bible_Books, number_correct):
                 incorrect_response_right_ans.append(before_random_book)
                 incorrect_response_wrong_ans.append(wrong_ans)
 
+        # --------------------------------------------------------
         # The following statements are for the questions left counter.
         # The messages changes depending on number_left variable's proximity to 0.
         # This is for when 1 question remains
+        # --------------------------------------------------------
         if number_left == 2:
             number_left -= 1
             print("Only " + str(number_left) + " question left...")
@@ -222,11 +260,15 @@ def Game(num_questions, bible_Books, number_correct):
             number_left -= 1
             print("You have " + str(number_left) + " left...")
             print("-" * 80)
+    # ========================================================
     # Scorecard section. I will calculate a percentage and give a grade.
-    # (Functionality for an answer sheet is also in the works)
-    percent = number_correct / num_questions
+    # Also a correction sheet will be printed.
+    # ========================================================
+    percent = number_correct / int(num_questions)
     percent *= 100
+    # --------------------------------------------------------
     # Grades depending on your percentage
+    # --------------------------------------------------------
     if percent == 100:
         print(
             "Congratulations bible scholar! You got an 'A+' at "
@@ -247,7 +289,9 @@ def Game(num_questions, bible_Books, number_correct):
             + str(int(percent))
             + "%. JW.ORG has a free copy of the bible for you to study from!"
         )
-    # This is where i will recall the wrong answers and give the correct answers
+    # --------------------------------------------------------
+    # This is the correction sheet section
+    # --------------------------------------------------------
     print("=" * 80)
     print("\nHere are your incorrect answers and the correct responses\n")
     print("=" * 80)
@@ -255,7 +299,7 @@ def Game(num_questions, bible_Books, number_correct):
     incorrect_response_index = 0
     # this will loop through to produce all of the incorrect answers and their corrections
     while incorrect_response_index <= len(incorrect_response_book) - 1:
-        # book in the question * boolean does not need conversion
+        # book in the question converted to str value// boolean does not need conversion
         response_book = incorrect_response_book[incorrect_response_index]
         response_book = bible_Books[response_book]
         # wrong ans converted to book
@@ -276,16 +320,24 @@ def Game(num_questions, bible_Books, number_correct):
         incorrect_response_index += 1
         print("=" * 80)
 
-    # Input for for replaying the game
-    print("\nWould you like to play again?")
-    print("\n1. Yes", "\n2. No\n")
-
-    play_again = int(input())
-    # Statements for play_again input
-    if play_again == 1:
-        return True
-    if play_again == 2:
-        return False
+    # --------------------------------------------------------
+    # Input for for replaying the game.
+    # while loop is an error provision.
+    # --------------------------------------------------------
+    play_again = 3
+    while play_again != 1 and play_again != 2:
+        print("\nWould you like to play again?")
+        print("\n1. Yes", "\n2. No\n")
+        play_again = input().strip()
+        if not play_again.isnumeric():
+            print("ERROR: Please select either '1' or '2' as a valid response")
+        # Statements for play_again input
+        elif int(play_again) == 1:
+            return True
+        elif int(play_again) == 2:
+            return False
+        else:
+            print("ERROR: Please select either '1' or '2' as a valid response")
 
 
 if __name__ == "__main__":
