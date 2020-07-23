@@ -87,12 +87,17 @@ def Game(num_questions, bible_Books, number_correct):
 
     number_left = num_questions
     q_exceptions = []
+    incorrect_response_book = []
+    incorrect_response_boolean = []
+    incorrect_response_wrong_ans = []
+    incorrect_response_right_ans = []
     # this loop will create the base questions "What book of the Bible comes...?"
     for questions in list(range(num_questions)):
         random_bit = random.getrandbits(1)
         random_boolean = bool(random_bit)
         book_exceptions = []
         ans_exceptions = []
+        wrong_answers = []
         # if statements meant to translate the random_bit value for use in the question.
         if random_boolean == True:
             random_boolean = "before"
@@ -146,6 +151,7 @@ def Game(num_questions, bible_Books, number_correct):
             if answer_randomizer == 101 and random_boolean == "after":
                 correct_answer = mult_letters_index + 1
                 ans_exceptions.append(after_random_book)
+                wrong_answers.append(after_random_book)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
@@ -154,7 +160,8 @@ def Game(num_questions, bible_Books, number_correct):
                 mult_letters_index += 1
             elif answer_randomizer == 102 and random_boolean == "before":
                 correct_answer = mult_letters_index + 1
-                ans_exceptions.append(after_random_book)
+                ans_exceptions.append(before_random_book)
+                wrong_answers.append(before_random_book)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
@@ -162,6 +169,7 @@ def Game(num_questions, bible_Books, number_correct):
                 )
                 mult_letters_index += 1
             else:
+                wrong_answers.append(random_ans)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
@@ -174,8 +182,24 @@ def Game(num_questions, bible_Books, number_correct):
         if ans == correct_answer:
             print("\nCorrect!")
             number_correct += 1
+        # incorrect tracker...
         else:
             print("\nIncorrect :,(")
+            # how we find and store the bible book that was selected incorrectly
+            wrong = ans - 1
+            wrong_ans = wrong_answers[wrong]
+            # here is where we append the key value pairs to the dictionary to be accessed at the end.
+            if random_boolean == "after":
+                incorrect_response_book.append(random_book)
+                incorrect_response_boolean.append(random_boolean)
+                incorrect_response_right_ans.append(after_random_book)
+                incorrect_response_wrong_ans.append(wrong_ans)
+            if random_boolean == "before":
+                incorrect_response_book.append(random_book)
+                incorrect_response_boolean.append(random_boolean)
+                incorrect_response_right_ans.append(before_random_book)
+                incorrect_response_wrong_ans.append(wrong_ans)
+
         # The following statements are for the questions left counter.
         # The messages changes depending on number_left variable's proximity to 0.
         # This is for when 1 question remains
@@ -223,6 +247,35 @@ def Game(num_questions, bible_Books, number_correct):
             + str(int(percent))
             + "%. JW.ORG has a free copy of the bible for you to study from!"
         )
+    # This is where i will recall the wrong answers and give the correct answers
+    print("=" * 80)
+    print("\nHere are your incorrect answers and the correct responses\n")
+    print("=" * 80)
+
+    incorrect_response_index = 0
+    # this will loop through to produce all of the incorrect answers and their corrections
+    while incorrect_response_index <= len(incorrect_response_book) - 1:
+        # book in the question * boolean does not need conversion
+        response_book = incorrect_response_book[incorrect_response_index]
+        response_book = bible_Books[response_book]
+        # wrong ans converted to book
+        response_wrong_ans = incorrect_response_wrong_ans[incorrect_response_index]
+        response_wrong_ans = bible_Books[response_wrong_ans]
+        # correct answer converted to book
+        response_right_ans = incorrect_response_right_ans[incorrect_response_index]
+        response_right_ans = bible_Books[response_right_ans]
+        print(
+            "\nWhat book of the Bible comes "
+            + incorrect_response_boolean[incorrect_response_index]
+            + " "
+            + response_book
+            + "?\n"
+        )
+        print("Your response was " + response_wrong_ans)
+        print("The correct answer was " + response_right_ans)
+        incorrect_response_index += 1
+        print("=" * 80)
+
     # Input for for replaying the game
     print("\nWould you like to play again?")
     print("\n1. Yes", "\n2. No\n")
