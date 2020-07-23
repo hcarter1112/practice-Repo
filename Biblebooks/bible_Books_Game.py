@@ -71,8 +71,11 @@ def main():
         "Jude",
         "Revelation",
     ]
-
-    print("Welcome to Harold's Bible Order Tester, 'H-BOT'!")
+    print("*" * 160)
+    print(
+        "\n                                                        Welcome to Harold's Bible Order Tester, 'H-BOT'!\n"
+    )
+    print("*" * 160)
 
     keepGoing = True
     number_correct = 0
@@ -164,12 +167,10 @@ def Game(num_questions, bible_Books, number_correct):
             if answer_randomizer not in answer_randomizer_no_repeat:
                 answer_randomizer_no_repeat.append(answer_randomizer)
             # ensures that the incorrect answers are not repeated in the same question
-            while random_ans in mult_choice_ans:
+            while random_ans in mult_choice_ans or random_ans == random_book:
                 random_ans = random.randrange(1, 66, 1)
-            if random_ans not in mult_choice_ans:
-                mult_choice_ans.append(random_ans)
             # adds the random_book in the list so that you will not get it as an answer
-            mult_choice_ans.append(random_book)
+            # mult_choice_ans.append(random_book)
             # --------------------------------------------------------
             # The following if statements give conditions
             # for a correct answer and a means of producing incorrect answers.
@@ -196,12 +197,13 @@ def Game(num_questions, bible_Books, number_correct):
                 )
                 mult_letters_index += 1
             else:
-                mult_choice_ans.append(random_ans)
                 print(
                     str(mult_letters[mult_letters_index])
                     + ". "
                     + bible_Books[random_ans]
                 )
+                if random_ans not in mult_choice_ans:
+                    mult_choice_ans.append(random_ans)
                 mult_letters_index += 1
         # Answer input
         ans = input("\nYour answer? ").strip()
@@ -212,7 +214,7 @@ def Game(num_questions, bible_Books, number_correct):
         # ========================================================
         # # Correct/Incorrect answer response and counter for correct answer
         # ========================================================
-        if ans == correct_answer:
+        if int(ans) == correct_answer:
             print("\nCorrect!")
             number_correct += 1
         # --------------------------------------------------------
@@ -271,28 +273,28 @@ def Game(num_questions, bible_Books, number_correct):
     # --------------------------------------------------------
     if percent == 100:
         print(
-            "Congratulations bible scholar! You got an 'A+' at "
+            "\nCongratulations bible scholar! You got an 'A+' at "
             + str(int(percent))
             + "%. WOOT!"
         )
     elif percent >= 90 and percent < 100:
-        print("You got an 'A' at " + str(int(percent)) + "%. Awesome work!")
+        print("\nYou got an 'A' at " + str(int(percent)) + "%. Awesome work!")
     elif percent >= 80 and percent < 90:
-        print("You got an 'B' at " + str(int(percent)) + "%. Good job!")
+        print("\nYou got an 'B' at " + str(int(percent)) + "%. Good job!")
     elif percent >= 70 and percent < 80:
-        print("You got an 'C' at " + str(int(percent)) + "%. Well... You passed =)!")
+        print("\nYou got an 'C' at " + str(int(percent)) + "%. Well... You passed =)!")
     elif percent >= 60 and percent < 70:
-        print("You got an 'D' at " + str(int(percent)) + "%. Ouch!")
+        print("\nYou got an 'D' at " + str(int(percent)) + "%. Ouch!")
     else:
         print(
-            "You got an 'F' at "
+            "\nYou got an 'F' at "
             + str(int(percent))
             + "%. JW.ORG has a free copy of the bible for you to study from!"
         )
     # --------------------------------------------------------
     # This is the correction sheet section
     # --------------------------------------------------------
-    print("=" * 80)
+    print("\n" + "=" * 80)
     print("\nHere are your incorrect answers and the correct responses\n")
     print("=" * 80)
 
