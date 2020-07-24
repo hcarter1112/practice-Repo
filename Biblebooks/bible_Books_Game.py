@@ -83,7 +83,7 @@ def main():
     while keepGoing:
         print("\nHow many questions would you like? ")
         num_questions = input().strip()
-        while not num_questions.isnumeric():
+        while not num_questions.isnumeric() or num_questions == 0:
             print("ERROR: Please enter a number")
             print("\nHow many questions would you like? ")
             num_questions = input().strip()
@@ -149,7 +149,12 @@ def Game(num_questions, bible_Books, number_correct):
         # ========================================================
         # Where the multiple choice is generated.
         # ========================================================
-        mult_letters = [1, 2, 3, 4]
+        # This statement is to make a semi random variation in the number of choices
+        if random_boolean == "before":
+            mult_letters = [1, 2, 3, 4]
+        else:
+            mult_letters = [1, 2, 3, 4, 5]
+
         mult_letters_index = 0
         # --------------------------------------------------------
         # begins with assigning RNG to certain values.
@@ -159,11 +164,17 @@ def Game(num_questions, bible_Books, number_correct):
         for items in mult_letters:
             before_random_book = random_book - 1
             after_random_book = random_book + 1
-            answer_randomizer = random.randrange(1, 5, 1)
+            if random_boolean == "before":
+                answer_randomizer = random.randrange(1, 5, 1)
+            else:
+                answer_randomizer = random.randrange(1, 6, 1)
             random_ans = random.randrange(2, 66, 1)
             # loop is for ensuring that the answer_randomizer value does not reapeat. This ensures that you will always get 1 correct answer
             while answer_randomizer in answer_randomizer_no_repeat:
-                answer_randomizer = random.randrange(1, 5, 1)
+                if random_boolean == "before":
+                    answer_randomizer = random.randrange(1, 5, 1)
+                else:
+                    answer_randomizer = random.randrange(1, 6, 1)
             if answer_randomizer not in answer_randomizer_no_repeat:
                 answer_randomizer_no_repeat.append(answer_randomizer)
             # ensures that the incorrect answers are not repeated in the same question
@@ -205,11 +216,16 @@ def Game(num_questions, bible_Books, number_correct):
                 if random_ans not in mult_choice_ans:
                     mult_choice_ans.append(random_ans)
                 mult_letters_index += 1
-        # Answer input
+        # Answer input and statements for if there are 4 or 5 choices
         ans = input("\nYour answer? ").strip()
-        while not ans.isnumeric() or int(ans) > 4 or int(ans) < 1:
-            print("ERROR: Please select '1', '2', '3', or '4' as a valid response")
-            ans = input("\nYour answer? ").strip()
+        if random_boolean == "before":
+            while not ans.isnumeric() or int(ans) > 4 or int(ans) < 1:
+                print("ERROR: Please select '1', '2', '3', or '4' as a valid response")
+                ans = input("\nYour answer? ").strip()
+        else:
+            while not ans.isnumeric() or int(ans) > 5 or int(ans) < 1:
+                print("ERROR: Please select '1', '2', '3', or '4' as a valid response")
+                ans = input("\nYour answer? ").strip()
 
         # ========================================================
         # # Correct/Incorrect answer response and counter for correct answer
@@ -255,8 +271,8 @@ def Game(num_questions, bible_Books, number_correct):
             )
             print("-" * 80)
         # Final question
-        elif number_left == 0:
-            break
+        elif number_left == 1:
+            print("Calculating your results...")
         # Greater than 3 questions remain
         else:
             number_left -= 1
